@@ -9,4 +9,10 @@ void main() {
     System.out.println("========TEST 1: department findById========");
     Department department = departmentDao.findById(3);
     System.out.println(department);
+
+    System.out.println("========TEST 2: department findAll========");
+    List<Department> list = departmentDao.findAll();
+    for (Department dep : list) {
+        System.out.println(dep);
+    }
 }
