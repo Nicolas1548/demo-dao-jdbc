@@ -3,7 +3,7 @@ import model.dao.DepartmentDao;
 import model.entities.Department;
 
 void main() {
-
+    Scanner sc = new Scanner(System.in);
     DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 
     System.out.println("========TEST 1: department findById========");
@@ -26,4 +26,13 @@ void main() {
     department.setName("IAs");
     departmentDao.update(department);
     System.out.println("Updated department with id: " + department.getId());
+
+    System.out.println("========TEST 5: department delete========");
+    System.out.println("Enter id for delete test:");
+    int id = sc.nextInt();
+    departmentDao.deleteById(id);
+    System.out.println("Deleted department with id: " + id);
+
+
+    sc.close();
 }
