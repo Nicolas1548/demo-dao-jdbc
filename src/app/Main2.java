@@ -15,4 +15,9 @@ void main() {
     for (Department dep : list) {
         System.out.println(dep);
     }
+
+    System.out.println("========TEST 2: department insert========");
+    Department newDepartment = new Department(null,"Games");
+    departmentDao.insert(newDepartment);
+    System.out.println("Inserted department with id: " + newDepartment.getId());
 }
