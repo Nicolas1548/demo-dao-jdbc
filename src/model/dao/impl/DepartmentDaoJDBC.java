@@ -18,35 +18,50 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void insert(Department obj) {
-            PreparedStatement st = null;
-            try {
-                st = connection.prepareStatement("INSERT INTO department (Name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = null;
+        try {
+            st = connection.prepareStatement("INSERT INTO department (Name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
 
-                st.setString(1, obj.getName());
+            st.setString(1, obj.getName());
 
-                int rows = st.executeUpdate();
-                if (rows > 0) {
-                    ResultSet rs = st.getGeneratedKeys();
-                    if(rs.next()){
-                        int id = rs.getInt(1);
-                        obj.setId(id);
-                    }
-                    DB.closeResult(rs);
-
-                }else {
-                    throw new DbException("Unexpected error! No rows affected");
+            int rows = st.executeUpdate();
+            if (rows > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
                 }
+                DB.closeResult(rs);
 
-            }catch (SQLException e) {
-                throw new DbException(e.getMessage());
+            } else {
+                throw new DbException("Unexpected error! No rows affected");
             }
-            finally {
-                DB.closeStatement(st);
-            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
     public void update(Department obj) {
+        PreparedStatement st = null;
+
+        try {
+            st = connection.prepareStatement("UPDATE department\n" +
+                    "SET Name = ?\n" +
+                    "WHERE Id = ?");
+
+            st.setString(1, obj.getName());
+            st.setInt(2, obj.getId());
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
 
     }
 
@@ -93,11 +108,9 @@ public class DepartmentDaoJDBC implements DepartmentDao {
                 list.add(dep);
             }
             return list;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResult(rs);
         }

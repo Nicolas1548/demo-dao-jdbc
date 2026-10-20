@@ -16,8 +16,14 @@ void main() {
         System.out.println(dep);
     }
 
-    System.out.println("========TEST 2: department insert========");
+    System.out.println("========TEST 3: department insert========");
     Department newDepartment = new Department(null,"Games");
     departmentDao.insert(newDepartment);
     System.out.println("Inserted department with id: " + newDepartment.getId());
+
+    System.out.println("========TEST 4: department update========");
+    department = departmentDao.findById(3);
+    department.setName("IAs");
+    departmentDao.update(department);
+    System.out.println("Updated department with id: " + department.getId());
 }
